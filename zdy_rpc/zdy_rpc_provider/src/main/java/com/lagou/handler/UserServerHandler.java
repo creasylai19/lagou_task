@@ -33,4 +33,11 @@ public class UserServerHandler extends ChannelInboundHandlerAdapter {
 
 
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+//        super.exceptionCaught(ctx, cause);
+        cause.printStackTrace();
+        ctx.close();
+    }
 }
