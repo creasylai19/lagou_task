@@ -14,14 +14,23 @@ public class UserServerHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if( msg instanceof RpcRequest) {
+
             RpcRequest request = (RpcRequest) msg;
-            String className = request.getClassName();
-            String methodName = request.getMethodName();
-            Class<?>[] parameterTypes = request.getParameterTypes();
-            Class<?> aClass = Class.forName(className);
-            Method method = aClass.getMethod(methodName, parameterTypes);
-            Object obj = method.invoke(ServerBootstrap.applicationContext.getBean(aClass), request.getParameters());
-            ctx.writeAndFlush(obj.toString());
+            try{
+                String className = request.getClassName();
+                String methodName = request.getMethodName();
+                Class<?>[] parameterTypes = request.getParameterTypes();
+                Class<?> aClass = Class.forName(className);
+                Method method = aClass.getMethod(methodName, parameterTypes);
+                Object obj = method.invoke(ServerBootstrap.applicationContext.getBean(aClass), request.getParameters());
+                ctx.writeAndFlush(obj.toString());
+            } catch (Exception e){
+                //TODO 暂时不清楚为何server会调用自己的toString方法
+                String s = "An exception occur." + request.getClassName() + "#" + request.getMethodName();
+                System.out.println(s);
+                ctx.writeAndFlush(s);
+            }
+
         }
         // 判断是否符合约定，符合则调用本地方法，返回数据
         // msg:  UserService#sayHello#are you ok?
@@ -36,8 +45,7 @@ public class UserServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-//        super.exceptionCaught(ctx, cause);
         cause.printStackTrace();
-        ctx.close();
+        super.exceptionCaught(ctx, cause);
     }
 }

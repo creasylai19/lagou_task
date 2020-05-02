@@ -8,4 +8,8 @@ public interface Constans {
         int ZOOKEEPER_PORT = 2181;
     }
 
+    interface Other{
+        int MILLISECONDS = 4*1000;
+    }
+
 }

@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
             e.printStackTrace();
         }
         try {
-            ServerInfo serverInfo = new ServerInfo(new Date(), sleepTime);
+            ServerInfo serverInfo = new ServerInfo(new Date(), sleepTime, Constans.Zookeeper.INET_ADDRESS+":"+netty_port);
             com.lagou.ServerBootstrap.client.setData().forPath(Constans.Zookeeper.PREFIX +"/"+ Constans.Zookeeper.INET_ADDRESS+":"+netty_port,
                     JSON.toJSON(serverInfo).toString().getBytes());
         } catch (Exception e) {
@@ -59,6 +59,8 @@ public class UserServiceImpl implements UserService {
                         pipeline.addLast(new StringEncoder());
 //                        pipeline.addLast(new StringDecoder());
                         pipeline.addLast(new UserServerHandler());
+//                        pipeline.addLast(new ReadTimeoutHandler(Constans.Other.MILLISECONDS, TimeUnit.MILLISECONDS));//读取超时 在设置时间内没有读取操作
+//                        pipeline.addLast(new WriteTimeoutHandler(Constans.Other.MILLISECONDS,TimeUnit.MILLISECONDS));//写入超时 在设置时间内没有写入操作
 
                     }
                 });

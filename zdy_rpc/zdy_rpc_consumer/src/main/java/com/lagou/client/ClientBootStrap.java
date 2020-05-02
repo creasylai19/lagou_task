@@ -20,9 +20,11 @@ import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.api.CuratorWatcher;
 import org.apache.curator.retry.ExponentialBackoffRetry;
+import org.apache.zookeeper.WatchedEvent;
 import org.apache.zookeeper.Watcher;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -39,8 +41,9 @@ public class ClientBootStrap {
 
         while (true){
             Thread.sleep(2000);
-//            System.out.println(new Date() + "--->" + proxy.sayHello("are you ok?"));
-            System.out.println("----");
+            String result = proxy.sayHello("are you ok?");
+            System.out.println(new Date() + "--->" + result);
+//            System.out.println("----");
         }
 
 
@@ -53,17 +56,24 @@ public class ClientBootStrap {
         client = CuratorFrameworkFactory.newClient(Constans.Zookeeper.INET_ADDRESS+":"+ Constans.Zookeeper.ZOOKEEPER_PORT, retryPolicy);
         client.start();
 
-        List<String> strings = client.getChildren().usingWatcher((CuratorWatcher) event -> {
-            if( event.getType() == Watcher.Event.EventType.NodeChildrenChanged){
-                handleChildrenChanged();
-            }
-        }).forPath(Constans.Zookeeper.PREFIX);
+        List<String> strings = client.getChildren().usingWatcher(
+                new CuratorWatcher() {
+                    @Override
+                    public void process(WatchedEvent event) throws Exception {
+                        if( event.getType() == Watcher.Event.EventType.NodeChildrenChanged) {
+                            handleChildrenChanged();
+                            client.getChildren().usingWatcher(this).forPath(Constans.Zookeeper.PREFIX);
+                        }
+                    }
+                }
+        ).forPath(Constans.Zookeeper.PREFIX);
         updateServices(strings);
 
 
     }
 
     private static void updateServices(List<String> strings) throws InterruptedException {
+
         SERVICES.clear();
         eventLoopGroups.forEach(EventExecutorGroup::shutdownGracefully);
 
@@ -81,6 +91,8 @@ public class ClientBootStrap {
                             pipeline.addLast(new RpcEncoder(RpcRequest.class, new JSONSerializer()));
 //                        pipeline.addLast( new RpcDecoder(RpcRequest.class, new JSONSerializer()));
                             pipeline.addLast(userClientHandler);
+//                            pipeline.addLast(new ReadTimeoutHandler(Constans.Other.MILLISECONDS, TimeUnit.MILLISECONDS));//读取超时 在设置时间内没有读取操作
+//                            pipeline.addLast(new WriteTimeoutHandler(Constans.Other.MILLISECONDS,TimeUnit.MILLISECONDS));//写入超时 在设置时间内没有写入操作
                         }
                     });
             String[] serverInfo = str.split(":");

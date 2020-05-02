@@ -21,12 +21,21 @@ public class MainTest {
     @Test
     public void testDate(){
         Date date = new Date();
-        System.out.println(date);
-        long time = date.getTime();
-        time = time - 5*1000;
-        date.setTime(time);
-        System.out.println(date);
+//        System.out.println(date);
+//        long time = date.getTime();
+//        time = time - 5*1000;
+//        date.setTime(time);
+//        System.out.println(date);
 
+        Date currentDate = new Date();
+        currentDate.setTime(currentDate.getTime()-5*1000);
+        System.out.println(date);
+        System.out.println(currentDate);
+        if( date.before(currentDate) ){
+            System.out.println("yes");
+        } else {
+            System.out.println("no");
+        }
     }
 
 }

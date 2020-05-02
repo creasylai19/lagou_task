@@ -30,4 +30,10 @@ public class RpcDecoder extends ByteToMessageDecoder {
         Object o = serializer.deserialize(clazz, bytes);
         out.add(o);
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        super.exceptionCaught(ctx, cause);
+    }
 }

@@ -39,7 +39,7 @@ public class ServerBootstrap implements ApplicationContextAware {
             //默认的session时间为60秒，连接超时时间为15秒
             client = CuratorFrameworkFactory.newClient(Zookeeper.INET_ADDRESS+":"+Zookeeper.ZOOKEEPER_PORT, retryPolicy);
             client.start();
-            ServerInfo serverInfo = new ServerInfo(new Date(), 0);
+            ServerInfo serverInfo = new ServerInfo(new Date(), 0, Zookeeper.INET_ADDRESS+":"+netty_port);
             client.create().creatingParentsIfNeeded().withMode(CreateMode.EPHEMERAL).inBackground()
                     .forPath(Constans.Zookeeper.PREFIX +"/"+Zookeeper.INET_ADDRESS+":"+netty_port, JSON.toJSON(serverInfo).toString().getBytes());
 //            System.in.read();

@@ -3,13 +3,12 @@ package com.lagou.client;
 import com.alibaba.fastjson.JSON;
 import com.lagou.pojo.RpcRequest;
 import com.lagou.pojo.ServerInfo;
+import com.lagou.utils.Constans;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,6 +25,9 @@ public class RpcConsumer {
             public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
                 //（1）调用初始化netty客户端的方法
 
+                if( method.getName().equals("toString") ) {//TODO 暂时不清楚为何会调用toString方法，先过滤掉
+                    return "toString";
+                }
                 RpcRequest request = new RpcRequest();
                 request.setClassName(serviceClass.getName());
                 request.setMethodName(method.getName());
@@ -39,7 +41,9 @@ public class RpcConsumer {
                 UserClientHandler userClientHandler = chooseUserClientHandler();
 //                UserClientHandler userClientHandler = ClientBootStrap.SERVICES.values().iterator().next();
                 if(null == userClientHandler){
-                    throw new RuntimeException("No services available");
+                    String message = "No services available";
+                    return message;
+//                    throw new RuntimeException();
                 }
                 userClientHandler.setPara(request);
                 // 去服务端请求数据
@@ -52,13 +56,19 @@ public class RpcConsumer {
     }
 
     private static UserClientHandler chooseUserClientHandler() throws Exception {
-        Map<ServerInfo, UserClientHandler> map = new TreeMap<>();
+        ArrayList<ServerInfo> serverInfos = new ArrayList<>();
         for (String key : ClientBootStrap.SERVICES.keySet()) {
             byte[] bytes = ClientBootStrap.client.getData().forPath(key);
             ServerInfo serverInfo = JSON.toJavaObject(JSON.parseObject(new String(bytes)), ServerInfo.class);
-            map.put(serverInfo, ClientBootStrap.SERVICES.get(key));
+            serverInfos.add(serverInfo);
         }
-        return map.values().iterator().next();
+
+        if( serverInfos.size() > 0 ) {
+            Collections.sort(serverInfos);
+            System.out.println(serverInfos);
+            return ClientBootStrap.SERVICES.get(Constans.Zookeeper.PREFIX+"/"+serverInfos.get(0).getInstance());
+        }
+        return null;
     }
 
 

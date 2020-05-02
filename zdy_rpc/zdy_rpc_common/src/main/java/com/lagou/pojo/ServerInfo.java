@@ -7,6 +7,16 @@ public class ServerInfo implements Comparable<ServerInfo>{
     private Date lastInvokeTime;
     private Integer lastInvokeDuration;
 
+    public String getInstance() {
+        return instance;
+    }
+
+    public void setInstance(String instance) {
+        this.instance = instance;
+    }
+
+    private String instance;
+
     public Date getLastInvokeTime() {
         return lastInvokeTime;
     }
@@ -23,9 +33,10 @@ public class ServerInfo implements Comparable<ServerInfo>{
         this.lastInvokeDuration = lastInvokeDuration;
     }
 
-    public ServerInfo(Date lastInvokeTime, Integer lastInvokeDuration) {
+    public ServerInfo(Date lastInvokeTime, Integer lastInvokeDuration, String instance) {
         this.lastInvokeTime = lastInvokeTime;
         this.lastInvokeDuration = lastInvokeDuration;
+        this.instance = instance;
     }
 
     public ServerInfo() {
@@ -36,6 +47,7 @@ public class ServerInfo implements Comparable<ServerInfo>{
         return "ServerInfo{" +
                 "lastInvokeTime=" + lastInvokeTime +
                 ", lastInvokeDuration=" + lastInvokeDuration +
+                ", instance='" + instance + '\'' +
                 '}';
     }
 
@@ -44,10 +56,10 @@ public class ServerInfo implements Comparable<ServerInfo>{
         Date currentDate = new Date();
         currentDate.setTime(currentDate.getTime()-5*1000);
         if( o.lastInvokeTime.before(currentDate) ){
-            o.lastInvokeDuration = Integer.MAX_VALUE;
+            o.lastInvokeDuration = 0;//如果是5秒之前调用，则设置为0，优先级最高
         }
         if( this.lastInvokeTime.before(currentDate) ){
-            this.lastInvokeDuration = Integer.MAX_VALUE;
+            this.lastInvokeDuration = 0;
         }
         return this.lastInvokeDuration.compareTo(o.lastInvokeDuration);
     }

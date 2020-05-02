@@ -22,4 +22,10 @@ public class RpcEncoder extends MessageToByteEncoder {
             byteBuf.writeBytes(bytes);
         }
     }
+
+    @Override
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        cause.printStackTrace();
+        super.exceptionCaught(ctx, cause);
+    }
 }
