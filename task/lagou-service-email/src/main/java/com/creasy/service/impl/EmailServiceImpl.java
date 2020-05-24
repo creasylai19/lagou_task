@@ -13,6 +13,7 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class EmailServiceImpl implements IEmailService {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JavaMailSenderImpl sender;
 

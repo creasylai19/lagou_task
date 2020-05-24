@@ -23,4 +23,12 @@ public class EmailController {
         return iEmailService.sendEmail(new Email(email, emailFrom, Email.DEFAULT_SUBJECT, Email.DEFAULT_CONTENT+code));
     }
 
+    @Value("${spring.mail.host}")
+    private String host;
+
+    @RequestMapping("info")
+    public String getInfo(){
+        return host;
+    }
+
 }

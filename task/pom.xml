@@ -8,6 +8,7 @@
         <module>web-project</module>
         <module>common</module>
         <module>lagou-service-email</module>
+        <module>lagou-service-config</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
