@@ -9,6 +9,7 @@
         <module>common</module>
         <module>lagou-service-email</module>
         <module>lagou-service-config</module>
+        <module>lagou-service-code</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

@@ -11,7 +11,7 @@ import java.util.Date;
 @NoArgsConstructor
 public class LagouAuthCode {
 
-    private int id;//⾃自增主键,
+    private Integer id;//⾃自增主键,
     private String email;//邮箱地址,
     private String code;//验证码,
     private Date createtime;//创建时间,

@@ -11,13 +11,14 @@ spring:
       retry:
         max-attempts: 5
       label: master
+#new add
+#    loadbalancer:
+#      ribbon:
+#        enabled: false
   profiles:
     active: dev
   application:
-    name: lagou-service-email
-email:
-  auth:
-    code: ${spring.application.name}
+    name: lagou-service-code
 eureka:
   client:
     service-url:
@@ -25,3 +26,9 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+logging:
+  level:
+    com.creasy.code.feignclients.EmailClient: debug
+lagou-service-email:
+  ribbon:
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule
