@@ -1,7 +1,7 @@
-package com.creasy.controller;
+package com.creasy.email.controller;
 
 import com.creasy.pojo.Email;
-import com.creasy.service.IEmailService;
+import com.creasy.email.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PathVariable;

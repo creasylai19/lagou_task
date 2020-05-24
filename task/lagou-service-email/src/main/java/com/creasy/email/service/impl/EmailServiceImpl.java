@@ -1,7 +1,7 @@
-package com.creasy.service.impl;
+package com.creasy.email.service.impl;
 
 import com.creasy.pojo.Email;
-import com.creasy.service.IEmailService;
+import com.creasy.email.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
