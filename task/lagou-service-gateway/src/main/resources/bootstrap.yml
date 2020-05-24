@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    config:
+#可以通过URI来访问Config Server
+#      uri: http://127.0.0.1:9006
+      discovery:
+        enabled: true
+        service-id: lagou-service-config
+      fail-fast: true
+#配置重试策略
+      retry:
+        max-attempts: 5
+      label: master
+  profiles:
+    active: dev
+  application:
+    name: lagou-service-gateway
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}enabled
