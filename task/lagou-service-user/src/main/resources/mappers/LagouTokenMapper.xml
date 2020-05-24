@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.creasy.user.dao.ITokenDao">
+    <select id="getLagouToken" resultType="com.creasy.pojo.LagouToken" parameterType="com.creasy.pojo.LagouToken">
+        select * from lagou_token
+        <where>
+            <if test="id != null">
+                id = #{id}
+            </if>
+            <if test="email != null">
+                AND email = #{email}
+            </if>
+            <if test="token != null">
+                AND token = #{token}
+            </if>
+        </where>
+        order by id desc limit 1;
+    </select>
+
+    <insert id="saveLagouToken" parameterType="com.creasy.pojo.LagouToken" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        insert into lagou_token (email,token)
+        values (#{email},#{token})
+    </insert>
+</mapper>

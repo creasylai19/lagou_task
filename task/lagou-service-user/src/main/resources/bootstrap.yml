@@ -11,13 +11,14 @@ spring:
       retry:
         max-attempts: 5
       label: master
+#new add
+#    loadbalancer:
+#      ribbon:
+#        enabled: false
   profiles:
     active: dev
   application:
-    name: lagou-service-email
-email:
-  auth:
-    code: HLXECDBRRQFFCOBA
+    name: lagou-service-user
 eureka:
   client:
     service-url:
@@ -25,3 +26,6 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+logging:
+  level:
+    root: debug

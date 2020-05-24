@@ -1,6 +1,6 @@
 package com.creasy.code.controller;
 
-import com.creasy.code.feignclients.EmailClient;
+import com.creasy.code.feignclients.IEmailClient;
 import com.creasy.code.service.IAuthCodeService;
 import com.creasy.pojo.StatusCode;
 import com.creasy.pojo.LagouAuthCode;
@@ -18,7 +18,7 @@ public class CodeController {
     @Autowired
     private IAuthCodeService iCodeService;
     @Autowired
-    private EmailClient emailClient;
+    private IEmailClient IEmailClient;
 
     @RequestMapping("/validate/{email}/{code}")
     public Integer validateCode(@PathVariable("email") String email, @PathVariable("code") String code ){
@@ -35,7 +35,7 @@ public class CodeController {
     @RequestMapping("/create/{email}")
     public boolean createCode(@PathVariable("email") String email){
         LagouAuthCode lagouAuthCode = iCodeService.saveAuthCode(email);
-        return emailClient.sendCodeToEmail(email, lagouAuthCode.getCode());
+        return IEmailClient.sendCodeToEmail(email, lagouAuthCode.getCode());
     }
 
 }

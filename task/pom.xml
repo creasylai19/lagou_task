@@ -10,6 +10,8 @@
         <module>lagou-service-email</module>
         <module>lagou-service-config</module>
         <module>lagou-service-code</module>
+        <module>lagou-service-user</module>
+        <module>lagou-service-gateway</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>
