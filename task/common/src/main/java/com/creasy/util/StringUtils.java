@@ -1,5 +1,6 @@
 package com.creasy.util;
 
+import java.util.List;
 import java.util.Random;
 
 public class StringUtils {
@@ -19,4 +20,15 @@ public class StringUtils {
         System.out.println(getRamdomString(6));
     }
 
+    public static boolean start(String value, List<String> uris) {
+        if( null == uris || uris.size() == 0 ) {
+            return false;
+        }
+        for (String s : uris) {
+            if( value.startsWith(s) ){
+                return true;
+            }
+        }
+        return false;
+    }
 }

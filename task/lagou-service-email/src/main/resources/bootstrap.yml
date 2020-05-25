@@ -17,7 +17,7 @@ spring:
     name: lagou-service-email
 email:
   auth:
-    code: HLXECDBRRQFFCOBA
+    code: ${your_code}
 eureka:
   client:
     service-url:
@@ -25,3 +25,6 @@ eureka:
   instance:
     prefer-ip-address: true
     instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
+logging:
+  level:
+    root: debug

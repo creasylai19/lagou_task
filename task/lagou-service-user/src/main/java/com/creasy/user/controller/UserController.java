@@ -25,10 +25,11 @@ public class UserController {
     @RequestMapping("/register/{email}/{password}/{code}")
     public LagouMessage register(@PathVariable("email") String email,
                                  @PathVariable("password") String password,
-                                 @PathVariable("code") String code) {
+                                 @PathVariable("code") String code,
+                                 HttpServletRequest request, HttpServletResponse response) {
         int integer = ICodeClient.validateCode(email, code);
         if( integer == StatusCode.ERROR.value() ){
-            return new LagouMessage(integer, StatusCode.ERROR.desc());
+            return new LagouMessage(integer, "验证码错误");
         }
         if( integer == StatusCode.EXPIRE.value()  ) {
             return new LagouMessage(integer, StatusCode.EXPIRE.desc());
@@ -37,6 +38,11 @@ public class UserController {
             return new LagouMessage(StatusCode.HAS_REGISTER.value(), StatusCode.HAS_REGISTER.desc());
         }
         iTokenService.register(email, password, code);
+        String token = iTokenService.getTokenByEmail(email);
+        Cookie cookie = new Cookie("token", token);
+//        cookie.setMaxAge(30*60);
+        cookie.setPath("/");
+        response.addCookie(cookie);
         return new LagouMessage(integer, StatusCode.CORRECT.desc());
     }
 
@@ -50,10 +56,12 @@ public class UserController {
                          @PathVariable("password") String password,
                          HttpServletRequest request, HttpServletResponse response){
         if(!iTokenService.login(email, password)){
-            return new LagouMessage(StatusCode.ERROR.value(), StatusCode.ERROR.desc());
+            return new LagouMessage(StatusCode.ERROR.value(), "用户名或密码错误");
         }
         String token = iTokenService.getTokenByEmail(email);
         Cookie cookie = new Cookie("token", token);
+//        cookie.setMaxAge(30*60);
+        cookie.setPath("/");
         response.addCookie(cookie);
         return new LagouMessage(StatusCode.CORRECT.value(), StatusCode.CORRECT.desc());
     }
