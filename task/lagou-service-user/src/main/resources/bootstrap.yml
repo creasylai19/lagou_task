@@ -11,7 +11,9 @@ spring:
       retry:
         max-attempts: 5
       label: master
-#new add
+    nacos:
+      server-addr: 127.0.0.1:8848
+  #new add
 #    loadbalancer:
 #      ribbon:
 #        enabled: false
@@ -19,10 +21,3 @@ spring:
     active: dev
   application:
     name: lagou-service-user
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/
-  instance:
-    prefer-ip-address: true
-    instance-id: ${spring.cloud.client.ip-address}:${spring.application.name}:${server.port}
