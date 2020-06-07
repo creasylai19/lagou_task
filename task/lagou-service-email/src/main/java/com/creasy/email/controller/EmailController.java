@@ -4,12 +4,14 @@ import com.creasy.pojo.Email;
 import com.creasy.email.service.IEmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/email")
+@RefreshScope
 public class EmailController {
 
     @Autowired
@@ -23,12 +25,12 @@ public class EmailController {
         return iEmailService.sendEmail(new Email(email, emailFrom, Email.DEFAULT_SUBJECT, Email.DEFAULT_CONTENT+code));
     }
 
-    @Value("${spring.mail.host}")
-    private String host;
+    @Value("${email.test}")
+    private String emailTest;
 
     @RequestMapping("info")
     public String getInfo(){
-        return host;
+        return emailTest;
     }
 
 }

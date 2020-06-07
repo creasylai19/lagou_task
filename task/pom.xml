@@ -6,7 +6,6 @@
         <module>web-project</module>
         <module>common</module>
         <module>lagou-service-email</module>
-        <module>lagou-service-config</module>
         <module>lagou-service-code</module>
         <module>lagou-service-user</module>
     </modules>

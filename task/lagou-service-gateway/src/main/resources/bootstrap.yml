@@ -1,18 +1,10 @@
 spring:
   cloud:
-    config:
-#可以通过URI来访问Config Server
-#      uri: http://127.0.0.1:9006
-      discovery:
-        enabled: true
-        service-id: lagou-service-config
-      fail-fast: true
-#配置重试策略
-      retry:
-        max-attempts: 5
-      label: master
     nacos:
       server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
   profiles:
     active: dev
   application:
