@@ -5,7 +5,15 @@ spring:
       config:
         server-addr: 127.0.0.1:8848
         file-extension: yaml
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 127.0.0.1:8083
   profiles:
     active: dev
   application:
     name: lagou-service-gateway
+logging:
+  level:
+#目前版本有bug，一直循环打印日志，先这样解决
+    com.alibaba.nacos.client: error

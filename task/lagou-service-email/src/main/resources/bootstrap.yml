@@ -12,3 +12,7 @@ spring:
 email:
   auth:
     code: LMIDIHQOVMLJQMOB
+logging:
+  level:
+    #目前版本有bug，一直循环打印日志，先这样解决
+    com.alibaba.nacos.client: error
