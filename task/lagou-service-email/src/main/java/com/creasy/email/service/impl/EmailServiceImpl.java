@@ -1,23 +1,27 @@
 package com.creasy.email.service.impl;
 
+import com.creasy.email.IEmailService;
 import com.creasy.pojo.Email;
-import com.creasy.email.service.IEmailService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.dubbo.config.annotation.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
-@Service
 @Slf4j
+@Service
 public class EmailServiceImpl implements IEmailService {
 
     @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     @Autowired
     private JavaMailSenderImpl sender;
+
+    @Value("${spring.mail.username}")
+    private String emailFrom;
 
     @Override
     public boolean sendEmail(Email email) {
@@ -27,7 +31,7 @@ public class EmailServiceImpl implements IEmailService {
             helper.setTo(email.getTo());
             helper.setSubject(email.getSubject());
             helper.setText(email.getContent());
-            helper.setFrom(email.getFrom());
+            helper.setFrom(emailFrom);
             sender.send(message);
             log.debug("my message is : ", message.toString());
         } catch (MessagingException e) {

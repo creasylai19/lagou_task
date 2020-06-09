@@ -1,4 +1,4 @@
-package com.creasy.email.service;
+package com.creasy.email;
 
 import com.creasy.pojo.Email;
 

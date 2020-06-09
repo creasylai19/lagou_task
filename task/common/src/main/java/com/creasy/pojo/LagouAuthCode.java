@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LagouAuthCode {
+public class LagouAuthCode implements Serializable {
 
     private Integer id;//⾃自增主键,
     private String email;//邮箱地址,
